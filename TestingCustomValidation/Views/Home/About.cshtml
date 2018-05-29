@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+@model TestingCustomValidation.Models.ContactModel
+
+<form asp-action="Contact" method="post">
+    <label asp-for="Message"></label>
+    <input asp-for="Message" />
+    <span asp-validation-for="Message"></span>
+    <input type="submit" value="Save" />
+</form>
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $.validator.addMethod("cannotbered",
+            function (value, element, parameters) {
+                if (value.indexOf("gmail.com") >= 0) {
+                    return value.toUpperCase();
+                }
+                
+            });
+
+        $.validator.unobtrusive.adapters.add("cannotbered", [], function (options) {
+            options.rules.cannotbered = {};
+            options.messages["cannotbered"] = options.message;
+        });
+    </script>
+}
